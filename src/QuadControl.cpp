@@ -75,10 +75,10 @@ VehicleCommand QuadControl::GenerateMotorCommands(float collThrustCmd, V3F momen
     const float p_bar = momentCmd.x / d_perp; // force around x
     const float q_bar = momentCmd.y / d_perp; // force around y
     const float r_bar = -momentCmd.z / kappa;  // force around z
-    const float F1 = 0.25 * (c_bar + p_bar + q_bar + r_bar);
-    const float F2 = 0.25 * (c_bar - p_bar + q_bar - r_bar);
-    const float F3 = 0.25 * (c_bar + p_bar - q_bar - r_bar);
-    const float F4 = 0.25 * (c_bar - p_bar - q_bar + r_bar);
+    const float F1 = (c_bar + p_bar + q_bar + r_bar) / 4;
+    const float F2 = (c_bar - p_bar + q_bar - r_bar) / 4;
+    const float F3 = (c_bar + p_bar - q_bar - r_bar) / 4;
+    const float F4 = (c_bar - p_bar - q_bar + r_bar) / 4;
     cmd.desiredThrustsN[0] = F1; // front left
     cmd.desiredThrustsN[1] = F2; // front right
     cmd.desiredThrustsN[2] = F3; // rear left
@@ -114,9 +114,9 @@ V3F QuadControl::BodyRateControl(V3F pqrCmd, V3F pqr)
   float q = pqr[1];
   float r = pqr[2];
 
-  momentCmd.x = Ixx * uBarPQR[0];//+((Iyy * r - Izz * q) * Ixx * p);
-  momentCmd.y = Iyy * uBarPQR[1];//+((Izz * p - Ixx * r) * Iyy * q);
-  momentCmd.z = Izz * uBarPQR[2];//+((Ixx * q - Iyy * p) * Izz * r);
+  momentCmd.x = Ixx * uBarPQR[0] + ((Iyy * r - Izz * q) * Ixx * p);
+  momentCmd.y = Iyy * uBarPQR[1] + ((Izz * p - Ixx * r) * Iyy * q);
+  momentCmd.z = Izz * uBarPQR[2] + ((Ixx * q - Iyy * p) * Izz * r);
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 

@@ -31,6 +31,7 @@ INCLUDE Simulation.txt
 [QuadControlParams]
 kpPosXY = 0
 kpPosZ = 0
+kiPosZ = 0
 kpVelXY = 0
 kpVelZ = 0
 kpBank = 0
